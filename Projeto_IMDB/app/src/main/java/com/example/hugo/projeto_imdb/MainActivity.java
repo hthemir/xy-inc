@@ -2,37 +2,26 @@ package com.example.hugo.projeto_imdb;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.support.v4.view.MenuItemCompat;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import adaptador.CustomAdapter;
 import adaptador.CustomRecyclerAdapter;
-import context.Contexto;
+import database.ControlaBanco;
 import informacoes.Imdb;
 import thread.TarefaAssincrona;
-import ws.Conexao;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -104,11 +93,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
 
             case R.id.action_save:
+                Intent intent = new Intent(MainActivity.this,ProducoesSalvas.class);
+                startActivity(intent);
                 //O usuario clicou no disquete para salvar a busca feita no BD
-                Toast.makeText(this, "Resultados da busca salvos", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Resultados da busca salvos", Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.action_search:

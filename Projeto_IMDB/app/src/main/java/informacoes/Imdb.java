@@ -32,6 +32,13 @@ public class Imdb {
     private String imdbID;
     private String Type;
 
+    public Imdb(String title, String id,String year,Bitmap imagem){
+        this.Title = title;
+        this.imdbID = id;
+        this.Year = year;
+        this.imagem = imagem;
+    }
+
     public String getTitle() {
         return Title;
     }
@@ -103,8 +110,6 @@ public class Imdb {
     public String getType() {
         return Type;
     }
-
-    //title,year,rated,released,runtime,genre,director,writer,actors,plot,language,country,awards,metascore,imdbrating,imdbvotes,imdbid,type
 
     public String getPoster() {
         return Poster;

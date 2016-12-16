@@ -2,27 +2,43 @@ package com.example.hugo.projeto_imdb;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.util.concurrent.ExecutionException;
 
+import database.ControlaBanco;
 import informacoes.Imdb;
 import thread.TarefaAssincronaObj;
 
 public class ProducaoInfo extends AppCompatActivity {
 
+    private ControlaBanco banco;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_producao_info);
 
+        banco = new ControlaBanco(getBaseContext());
+
         Bundle bundle = getIntent().getExtras();
         String id = bundle.getString("imdb");
-        Imdb imdb = callTask("http://www.omdbapi.com/?i=" + id);
+        final Imdb imdb = callTask("http://www.omdbapi.com/?i=" + id);
 
         setView(imdb);
+
+        Button salvar = (Button) findViewById(R.id.btnSalvar);
+        salvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String resultado = banco.inserirProducao(imdb);
+                Toast.makeText(getApplicationContext(),resultado,Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private Imdb callTask(String endereco){

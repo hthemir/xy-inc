@@ -60,6 +60,7 @@ public class Conexao {
             String json = pedidoJson(url);
             Gson gson = new Gson();
             Imdb imdb = gson.fromJson(json,Imdb.class);
+            imdb.setImagem(downloadImagem(imdb.getPoster()));
             return imdb;
     }
 
