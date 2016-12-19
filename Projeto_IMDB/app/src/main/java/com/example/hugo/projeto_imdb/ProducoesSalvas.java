@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -25,15 +26,14 @@ public class ProducoesSalvas extends AppCompatActivity {
         Cursor cursor = banco.consultarProducoes();
 
         ArrayList<Imdb> lista = new ArrayList<Imdb>();
-        while(true){
+
+        for(int i=0; i<cursor.getCount();i++){
             String id = cursor.getString(0);
             String titulo = cursor.getString(1);
             String ano = cursor.getString(2);
             byte[] image = cursor.getBlob(3);
             lista.add(new Imdb(titulo,id,ano, BitmapFactory.decodeByteArray(image,0,image.length)));
             cursor.moveToNext();
-            if(cursor.isAfterLast())
-                break;
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listaReciclavelSalvos);

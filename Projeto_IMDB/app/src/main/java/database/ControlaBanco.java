@@ -18,17 +18,17 @@ public class ControlaBanco {
     private CriaBanco criaBanco;
 
     public ControlaBanco(Context context){
-        criaBanco = new CriaBanco(context);
+        criaBanco = CriaBanco.getInstance(context);
     }
 
-    public String inserirProducao(Imdb imdb){
+    public synchronized String inserirProducao(Imdb imdb){
         ContentValues values = new ContentValues();
         long resultado;
 
         database = criaBanco.getWritableDatabase();
         putValues(values,imdb);
         resultado = database.insert(CriaBanco.TABELA,null,values);
-        database.close();
+        //database.close();
 
         if(resultado==-1)
             return "Erro";
@@ -38,7 +38,7 @@ public class ControlaBanco {
 
     //entao eu vou criar uma nova activity que disponibiliza todas as pesquisas salvas
     //sempre que entrar nas informações de um filme, adiciona tais informações a esse item se ele estiver salvo no bd
-    public Cursor consultarProducoes(){
+    public synchronized Cursor consultarProducoes(){
         //cursor eh uma classe que salvara as informacoes retornadas por uma query em um BD
         Cursor cursor;
         //estes sao os campos que serao retornados
@@ -52,9 +52,17 @@ public class ControlaBanco {
             cursor.moveToFirst();
         }
         //fecha o banco de dados
-        database.close();
+        //database.close();
 
         return cursor;
+    }
+
+    public synchronized void deletarProducao(String id){
+        //passa o id para identificar o item a ser removido
+        String where = CriaBanco.IMDBID + "=" + "'"+id+"'";
+        database = criaBanco.getReadableDatabase();
+        database.delete(CriaBanco.TABELA,where,null);
+        //database.close();
     }
 
     public void putValues(ContentValues values, Imdb imdb){

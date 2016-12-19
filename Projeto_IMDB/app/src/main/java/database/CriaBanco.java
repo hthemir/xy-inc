@@ -32,11 +32,18 @@ public class CriaBanco extends SQLiteOpenHelper {
     public static final String IMDBID = "_id";
     public static final String TYPE = "type";
 
-    private static final int VERSAO = 1;
+    private static final int VERSAO = 2;
 
     //construtor
     public CriaBanco(Context context){
         super(context,NOME_BANCO,null,VERSAO);
+    }
+    //singleton
+    private static CriaBanco instance;
+    public static synchronized CriaBanco getInstance(Context context){
+        if(instance == null)
+            instance = new CriaBanco(context);
+        return instance;
     }
 
     //chamado quando a aplicacao chama o bd pela primeira vez.

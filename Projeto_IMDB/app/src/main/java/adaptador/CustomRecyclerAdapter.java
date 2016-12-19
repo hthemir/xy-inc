@@ -53,6 +53,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter{
                 Intent intent = new Intent(Contexto.context(), ProducaoInfo.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("imdb",imdb.getImdbID());
+                intent.putExtra("contexto",context.getClass().toString());
                 Contexto.context().startActivity(intent);
             }
         });

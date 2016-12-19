@@ -1,5 +1,6 @@
 package com.example.hugo.projeto_imdb;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,16 +28,31 @@ public class ProducaoInfo extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         String id = bundle.getString("imdb");
+        String contexto = bundle.getString("contexto");
         final Imdb imdb = callTask("http://www.omdbapi.com/?i=" + id);
 
         setView(imdb);
 
-        Button salvar = (Button) findViewById(R.id.btnSalvar);
+        final Button salvar = (Button) findViewById(R.id.btnSalvar);
+        if(contexto.equals("class com.example.hugo.projeto_imdb.ProducoesSalvas")){
+            salvar.setText("Remover");
+        } else {
+            salvar.setText("Salvar");
+        }
         salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String resultado = banco.inserirProducao(imdb);
-                Toast.makeText(getApplicationContext(),resultado,Toast.LENGTH_LONG).show();
+                if(salvar.getText().toString().equals("Salvar"))
+                {
+                    String resultado = banco.inserirProducao(imdb);
+                    //tava getAplicationContext aqui
+                    Toast.makeText(ProducaoInfo.this, resultado, Toast.LENGTH_LONG).show();
+                } else {
+                    banco.deletarProducao(imdb.getImdbID());
+                    //Toast.makeText(ProducaoInfo.this,"Removido",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(ProducaoInfo.this,ProducoesSalvas.class);
+                    startActivity(intent);
+                }
             }
         });
     }
