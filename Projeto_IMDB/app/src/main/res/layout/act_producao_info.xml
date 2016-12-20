@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:paddingBottom="5dp"
+        android:orientation="vertical"
         android:id="@+id/layoutBotao">
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btnSalvar"/>
+            android:id="@+id/btnSalvar"
+            android:background="@color/corAmarela" />
+
     </LinearLayout>
 
     <ScrollView
@@ -26,7 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@color/corAmarelaClaro">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -40,7 +45,6 @@
                     android:layout_weight="0.04"
                     android:id="@+id/meuTitulo"/>
             </LinearLayout>
-            <View style="@style/divider"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,12 +66,12 @@
                     android:id="@+id/meuAno"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@color/corAmarelaClaro">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,7 +86,7 @@
                     android:id="@+id/minhaClassificacao"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,12 +106,13 @@
                     android:id="@+id/minhaData"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@color/corAmarelaClaro">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -122,7 +127,7 @@
                     android:id="@+id/minhaDuracao"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,12 +147,13 @@
                     android:id="@+id/meuGenero"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@color/corAmarelaClaro">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -162,7 +168,7 @@
                     android:id="@+id/meuDiretor"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -182,12 +188,13 @@
                     android:id="@+id/meusEscritores"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@color/corAmarelaClaro">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -202,7 +209,7 @@
                     android:id="@+id/meusAtores"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -222,12 +229,13 @@
                     android:id="@+id/minhaSinopse"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@color/corAmarelaClaro">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -242,7 +250,7 @@
                     android:id="@+id/minhaLingua"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -262,12 +270,13 @@
                     android:id="@+id/meuPais"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@color/corAmarelaClaro">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -282,7 +291,7 @@
                     android:id="@+id/meusPremios"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -302,12 +311,13 @@
                     android:id="@+id/meuMetascore"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@color/corAmarelaClaro">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -322,7 +332,7 @@
                     android:id="@+id/minhaNota"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -342,12 +352,13 @@
                     android:id="@+id/meusVotos"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@color/corAmarelaClaro">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -362,7 +373,7 @@
                     android:id="@+id/meuID"
                     />
             </LinearLayout>
-            <View style="@style/divider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

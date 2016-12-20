@@ -11,7 +11,7 @@
     <style name="divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/corCinza</item>
+        <item name="android:background">@color/corPreta</item>
     </style>
 
 </resources>

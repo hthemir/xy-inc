@@ -1,10 +1,15 @@
 package com.example.hugo.projeto_imdb;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +39,13 @@ public class ProducaoInfo extends AppCompatActivity {
         setView(imdb);
 
         final Button salvar = (Button) findViewById(R.id.btnSalvar);
+        //final FloatingActionButton botao = (FloatingActionButton) findViewById(R.id.botao);
         if(contexto.equals("class com.example.hugo.projeto_imdb.ProducoesSalvas")){
             salvar.setText("Remover");
+            //botao.setImageResource(R.drawable.ic_remover);
         } else {
             salvar.setText("Salvar");
+            //botao.setImageResource(R.drawable.ic_salvar);
         }
         salvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +64,19 @@ public class ProducaoInfo extends AppCompatActivity {
                 }
             }
         });
+        /*botao.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    Float XAnterior = event.getX();
+                    Float YAnterior = event.getY();
+                    Log.i("Minha activity","Action down "+ XAnterior + " " + YAnterior);
+                }
+                else if (event.getAction()==MotionEvent.ACTION_MOVE){
+                    LayoutParams params = new LayoutParams(v.getWidth(),v.getHeight(),(int)(event.getRawX() - (v.getWidth()/2)),(int)(event.getRawY() - v.getHeight()));
+                }
+            }
+        });*/
     }
 
     private Imdb callTask(String endereco){
