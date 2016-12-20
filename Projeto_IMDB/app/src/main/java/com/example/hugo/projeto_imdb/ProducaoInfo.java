@@ -22,7 +22,7 @@ public class ProducaoInfo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_producao_info);
+        setContentView(R.layout.act_producao_info);
 
         banco = new ControlaBanco(getBaseContext());
 
@@ -52,6 +52,7 @@ public class ProducaoInfo extends AppCompatActivity {
                     //Toast.makeText(ProducaoInfo.this,"Removido",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(ProducaoInfo.this,ProducoesSalvas.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });

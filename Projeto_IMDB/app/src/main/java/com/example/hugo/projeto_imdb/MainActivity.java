@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //Esconde o teclado
+                searchView.clearFocus();
                 //Pega o titulo pesquisado. Se for mais de um nome ele troca espaços por + (ex.: the flash -> the+flash)
                 String titulo = searchView.getQuery().toString().replace(' ','+');
                 //Esse endereco retorna uma lista com os filmes que contenham a pesquisa em seu titulo
@@ -75,8 +78,10 @@ public class MainActivity extends AppCompatActivity {
                     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listaReciclavel);
                     //Cria um adapter custom com a lista resultado da pesquisae entao preenche a lista reciclavel
                     recyclerView.setAdapter(new CustomRecyclerAdapter(lista,MainActivity.this));
+                    //Cria um layout grid e define como o layout da lista reciclavel
+                    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this,2);
                     //Cria um layout vertical e define como o layout da lista reciclavel
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false);
+                    //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false);
                     recyclerView.setLayoutManager(layoutManager);
                     return true;
                 }

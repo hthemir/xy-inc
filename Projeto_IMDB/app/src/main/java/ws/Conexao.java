@@ -141,7 +141,7 @@ public class Conexao {
                 InputStream inputStream = endereco.openStream();
                 //Baixa a imagem
                 Bitmap imagem = BitmapFactory.decodeStream(inputStream);
-                imagem = redefinirImagem(imagem);
+                //imagem = redefinirImagem(imagem,4);
                 //Fecha a conexao
                 inputStream.close();
                 return imagem;
@@ -151,11 +151,11 @@ public class Conexao {
             return null;
         }
     }
-
-    private static Bitmap redefinirImagem(Bitmap originalImage){
+    //qtdTela seria o numero de producoes na tela
+    private static Bitmap redefinirImagem(Bitmap originalImage, int qtdTela){
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        int width = (int)(1.0 * metrics.widthPixels);
-        int height = (int)(1.0 * metrics.heightPixels);
+        int width = (int)(1.0/qtdTela * metrics.widthPixels);
+        int height = (int)(1.0/qtdTela * metrics.heightPixels);
 
         Bitmap background = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 

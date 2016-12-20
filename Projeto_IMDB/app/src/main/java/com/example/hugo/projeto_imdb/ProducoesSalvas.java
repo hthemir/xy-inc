@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
@@ -38,7 +39,8 @@ public class ProducoesSalvas extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listaReciclavelSalvos);
         recyclerView.setAdapter(new CustomRecyclerAdapter(lista,this));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this,2);
+        //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
     }
 }

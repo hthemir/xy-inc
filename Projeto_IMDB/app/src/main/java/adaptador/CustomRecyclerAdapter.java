@@ -34,7 +34,8 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter{
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_list, parent, false);
+        //View view = LayoutInflater.from(context).inflate(R.layout.custom_list, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.cardview, parent, false);
         CustomRecyclerViewHolder holder = new CustomRecyclerViewHolder(view);
         return holder;
     }
@@ -47,7 +48,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter{
         holder.txtAno.setText(imdb.getYear());
         holder.imgPoster.setImageBitmap(imdb.getImagem());
 
-        holder.imgPoster.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Contexto.context(), ProducaoInfo.class);
