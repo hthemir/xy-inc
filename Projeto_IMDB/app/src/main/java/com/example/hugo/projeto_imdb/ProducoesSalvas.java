@@ -2,6 +2,7 @@ package com.example.hugo.projeto_imdb;
 
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,7 +31,9 @@ public class ProducoesSalvas extends AppCompatActivity {
         ArrayList<Imdb> lista = new ArrayList<Imdb>();
 
         if(cursor.getCount()==0){
-            Toast.makeText(this,"Sem produções salvas",Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.producoesSalvasLayout),"Sem produções salvas",Snackbar.LENGTH_LONG);
+            snackbar.show();
+            //Toast.makeText(this,"Sem produções salvas",Toast.LENGTH_SHORT).show();
         }
         else {
 
@@ -45,7 +48,7 @@ public class ProducoesSalvas extends AppCompatActivity {
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listaReciclavelSalvos);
-        recyclerView.setAdapter(new CustomRecyclerAdapter(lista,this));
+        recyclerView.setAdapter(new CustomRecyclerAdapter(lista,this,this));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this,2);
         //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);

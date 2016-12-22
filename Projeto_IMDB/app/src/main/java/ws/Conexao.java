@@ -152,7 +152,7 @@ public class Conexao {
         }
     }
     //qtdTela seria o numero de producoes na tela
-    private static Bitmap redefinirImagem(Bitmap originalImage, int qtdTela){
+    /*private static Bitmap redefinirImagem(Bitmap originalImage, int qtdTela){
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         int width = (int)(1.0/qtdTela * metrics.widthPixels);
         int height = (int)(1.0/qtdTela * metrics.heightPixels);
@@ -179,5 +179,5 @@ public class Conexao {
         canvas.drawBitmap(originalImage, transformation, paint);
 
         return background;
-    }
+    }*/
 }

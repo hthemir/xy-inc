@@ -1,19 +1,15 @@
 package adaptador;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.example.hugo.projeto_imdb.MainActivity;
 import com.example.hugo.projeto_imdb.ProducaoInfo;
 import com.example.hugo.projeto_imdb.R;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -26,10 +22,12 @@ import informacoes.Imdb;
 public class CustomRecyclerAdapter extends RecyclerView.Adapter{
     private ArrayList<Imdb> lista;
     private Context context;
+    private Activity pai;
 
-    public CustomRecyclerAdapter(ArrayList<Imdb> lista, Context context){
+    public CustomRecyclerAdapter(ArrayList<Imdb> lista, Context context, Activity pai){
         this.lista = lista;
         this.context = context;
+        this.pai = pai;
     }
 
     @Override
@@ -56,6 +54,9 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter{
                 intent.putExtra("imdb",imdb.getImdbID());
                 intent.putExtra("contexto",context.getClass().toString());
                 Contexto.context().startActivity(intent);
+                if(!context.getClass().toString().equals("class com.example.hugo.projeto_imdb.MainActivity")) {
+                    pai.finish();
+                }
             }
         });
     }

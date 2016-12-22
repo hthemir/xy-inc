@@ -3,6 +3,7 @@ package com.example.hugo.projeto_imdb;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -71,13 +73,15 @@ public class MainActivity extends AppCompatActivity {
                 //Cria uma thread para fazer a pesquisa
                 ArrayList<Imdb> lista = callTask(endereco);
                 if(lista == null){
-                    Toast.makeText(MainActivity.this,"Filme nao encontrado",Toast.LENGTH_LONG).show();
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.mainLayout),"Filme nao encontrado",Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    // Toast.makeText(MainActivity.this,"Filme nao encontrado",Toast.LENGTH_LONG).show();
                     return false;
                 }else{
                     //Associa a variavel recyclerView à listaReciclavel no layout
                     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listaReciclavel);
                     //Cria um adapter custom com a lista resultado da pesquisae entao preenche a lista reciclavel
-                    recyclerView.setAdapter(new CustomRecyclerAdapter(lista,MainActivity.this));
+                    recyclerView.setAdapter(new CustomRecyclerAdapter(lista,MainActivity.this,MainActivity.this));
                     //Cria um layout grid e define como o layout da lista reciclavel
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this,2);
                     //Cria um layout vertical e define como o layout da lista reciclavel
@@ -115,7 +119,9 @@ public class MainActivity extends AppCompatActivity {
 
             default:
                 //Se chegar no default, o usuario utilizou uma opcao nao implementada
-                Toast.makeText(this, "Acao invalida",Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.mainLayout),"Acao invalida",Snackbar.LENGTH_LONG);
+                snackbar.show();
+                //Toast.makeText(this, "Acao invalida",Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
         }
     }

@@ -2,6 +2,7 @@ package com.example.hugo.projeto_imdb;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -39,44 +40,30 @@ public class ProducaoInfo extends AppCompatActivity {
         setView(imdb);
 
         final Button salvar = (Button) findViewById(R.id.btnSalvar);
-        //final FloatingActionButton botao = (FloatingActionButton) findViewById(R.id.botao);
         if(contexto.equals("class com.example.hugo.projeto_imdb.ProducoesSalvas")){
             salvar.setText("Remover");
-            //botao.setImageResource(R.drawable.ic_remover);
         } else {
             salvar.setText("Salvar");
-            //botao.setImageResource(R.drawable.ic_salvar);
         }
         salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent;
                 if(salvar.getText().toString().equals("Salvar"))
                 {
                     String resultado = banco.inserirProducao(imdb);
-                    //tava getAplicationContext aqui
-                    Toast.makeText(ProducaoInfo.this, resultado, Toast.LENGTH_LONG).show();
+                    //Snackbar snackbar = Snackbar.make(findViewById(R.id.producaoInfoLayout),resultado,Snackbar.LENGTH_LONG);
+                    //snackbar.show();
+                    //Toast.makeText(ProducaoInfo.this, resultado, Toast.LENGTH_LONG).show();
+                    finish();
                 } else {
                     banco.deletarProducao(imdb.getImdbID());
-                    //Toast.makeText(ProducaoInfo.this,"Removido",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(ProducaoInfo.this,ProducoesSalvas.class);
+                    intent = new Intent(ProducaoInfo.this,ProducoesSalvas.class);
                     startActivity(intent);
                     finish();
                 }
             }
         });
-        /*botao.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction()==MotionEvent.ACTION_DOWN){
-                    Float XAnterior = event.getX();
-                    Float YAnterior = event.getY();
-                    Log.i("Minha activity","Action down "+ XAnterior + " " + YAnterior);
-                }
-                else if (event.getAction()==MotionEvent.ACTION_MOVE){
-                    LayoutParams params = new LayoutParams(v.getWidth(),v.getHeight(),(int)(event.getRawX() - (v.getWidth()/2)),(int)(event.getRawY() - v.getHeight()));
-                }
-            }
-        });*/
     }
 
     private Imdb callTask(String endereco){
