@@ -1,26 +1,21 @@
 package com.example.hugo.projeto_imdb;
 
+import android.content.ContentValues;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import java.util.concurrent.ExecutionException;
 
+import database.BancoIMDb;
 import database.ControlaBanco;
+import database.CriaBanco;
 import informacoes.Imdb;
-import thread.TarefaAssincronaObj;
+import assynctask.TarefaAssincronaObj;
 
 public class ProducaoInfo extends AppCompatActivity {
 
@@ -51,13 +46,20 @@ public class ProducaoInfo extends AppCompatActivity {
                 Intent intent;
                 if(salvar.getText().toString().equals("Salvar"))
                 {
-                    String resultado = banco.inserirProducao(imdb);
+                    ContentValues values = new ContentValues();
+                    BancoIMDb.putValues(values,imdb);
+                    Long resultado = banco.inserirProducao(CriaBanco.TABELA,values);
                     //Snackbar snackbar = Snackbar.make(findViewById(R.id.producaoInfoLayout),resultado,Snackbar.LENGTH_LONG);
                     //snackbar.show();
-                    //Toast.makeText(ProducaoInfo.this, resultado, Toast.LENGTH_LONG).show();
+                    if(resultado==-1)
+                        Toast.makeText(ProducaoInfo.this, "Erro ao adicionar", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(ProducaoInfo.this, "Adicionado com sucesso", Toast.LENGTH_SHORT).show();
+
                     finish();
                 } else {
-                    banco.deletarProducao(imdb.getImdbID());
+                    String where = CriaBanco.tabela.IMDBID + "=" + "'"+imdb.getImdbID()+"'";
+                    banco.deletarProducao(CriaBanco.TABELA,where);
                     intent = new Intent(ProducaoInfo.this,ProducoesSalvas.class);
                     startActivity(intent);
                     finish();

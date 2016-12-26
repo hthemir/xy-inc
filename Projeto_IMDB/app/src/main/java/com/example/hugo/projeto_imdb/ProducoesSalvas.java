@@ -26,7 +26,8 @@ public class ProducoesSalvas extends AppCompatActivity {
         setContentView(R.layout.activity_producoes_salvas);
 
         ControlaBanco banco = new ControlaBanco(getBaseContext());
-        Cursor cursor = banco.consultarProducoes();
+        String campos[] = {CriaBanco.tabela.IMDBID,CriaBanco.tabela.TITLE,CriaBanco.tabela.YEAR,CriaBanco.tabela.POSTER};
+        Cursor cursor = banco.consultarProducoes(CriaBanco.TABELA,campos);
 
         ArrayList<Imdb> lista = new ArrayList<Imdb>();
 
