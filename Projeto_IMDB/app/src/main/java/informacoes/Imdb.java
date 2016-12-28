@@ -37,6 +37,8 @@ public class Imdb {
     private String imdbID;
     private String Type;
 
+    public Imdb(){};
+
     public Imdb(String title, String id,String year,String imagem){
         this.Title = title;
         this.imdbID = id;
@@ -119,6 +121,82 @@ public class Imdb {
 
     public String getType() {
         return Type;
+    }
+
+    public void setActors(String actors) {
+        Actors = actors;
+    }
+
+    public void setDirector(String director) {
+        Director = director;
+    }
+
+    public void setGenre(String genre) {
+        Genre = genre;
+    }
+
+    public void setPlot(String plot) {
+        Plot = plot;
+    }
+
+    public void setImdbRating(String imdbRating) {
+        this.imdbRating = imdbRating;
+    }
+
+    public void setPoster(String poster) {
+        Poster = poster;
+    }
+
+    public void setRated(String rated) {
+        Rated = rated;
+    }
+
+    public void setAwards(String awards) {
+        Awards = awards;
+    }
+
+    public void setCountry(String country) {
+        Country = country;
+    }
+
+    public void setLanguage(String language) {
+        Language = language;
+    }
+
+    public void setReleased(String released) {
+        Released = released;
+    }
+
+    public void setImdbID(String imdbID) {
+        this.imdbID = imdbID;
+    }
+
+    public void setImdbVotes(String imdbVotes) {
+        this.imdbVotes = imdbVotes;
+    }
+
+    public void setMetascore(String metascore) {
+        Metascore = metascore;
+    }
+
+    public void setRuntime(String runtime) {
+        Runtime = runtime;
+    }
+
+    public void setTitle(String title) {
+        Title = title;
+    }
+
+    public void setType(String type) {
+        Type = type;
+    }
+
+    public void setWriter(String writer) {
+        Writer = writer;
+    }
+
+    public void setYear(String year) {
+        Year = year;
     }
 
     public String getPoster() {

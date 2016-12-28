@@ -14,7 +14,7 @@ import informacoes.Imdb;
 /**
  * Created by Hugo on 26/12/2016.
  */
-public class BancoIMDb {
+public class BancoIMDb extends Tabela{
     public static final String TITLE = "title";
     public static final String YEAR = "year";
     public static final String RATED = "rated";
@@ -55,16 +55,5 @@ public class BancoIMDb {
                 + IMDBVOTES + " text,"
                 + IMDBID + " text PRIMARY KEY,"
                 + TYPE + " text";
-    }
-
-    public static ContentValues putValues(Map<String,String> mapa, ContentValues values){
-        Set<Map.Entry<String,String>> set = mapa.entrySet();
-        Iterator it = set.iterator();
-
-        while(it.hasNext()){
-            Map.Entry<String,String> entry = (Map.Entry)it.next();
-            values.put(entry.getKey(),entry.getValue());
-        }
-        return values;
     }
 }

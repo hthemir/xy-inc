@@ -59,4 +59,22 @@ public class ControlaBanco {
         database.delete(tabela,where,null);
         //database.close();
     }
+
+    //Os parametros sao a tabela que sera acessada e os campos de informacao que serao retornados no cursor
+    public synchronized Cursor buscaProducao(String tabela, String[] campos, String where){
+        //cursor eh uma classe que salvara as informacoes retornadas por uma query em um BD
+        Cursor cursor;
+        //abre o banco somente para leitura
+        database = criaBanco.getReadableDatabase();
+        //faz a pesquisa
+        cursor = database.query(tabela,campos,where,null,null,null,null,null);
+        if(cursor!=null){
+            //move o cursor para a primeira linha
+            cursor.moveToFirst();
+        }
+        //fecha o banco de dados
+        //database.close();
+
+        return cursor;
+    }
 }

@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Imdb> callTask(String endereco){
         //Cria uma assync task, que executa no plano de fundo do aplicativo
-        TarefaAssincrona task = new TarefaAssincrona();
+        TarefaAssincrona task = new TarefaAssincrona(MainActivity.this);
         //execute faz com que a task execute seus metodos( doInBackground necessario + 2 opcionais)
         task.execute(endereco);
 
@@ -137,5 +137,4 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
-
 }
