@@ -24,7 +24,7 @@ public class TarefaAssincronaObj extends AsyncTask<String, Void, Imdb> {
 
     @Override
     protected void onPreExecute(){
-        load = ProgressDialog.show(context,"","Carregando");
+        load = ProgressDialog.show(context,"","Carregando",true);
     }
 
     @Override
