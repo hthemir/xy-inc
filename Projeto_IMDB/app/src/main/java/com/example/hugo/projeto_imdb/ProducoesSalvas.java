@@ -34,7 +34,6 @@ public class ProducoesSalvas extends AppCompatActivity {
         if(cursor.getCount()==0){
             Snackbar snackbar = Snackbar.make(findViewById(R.id.producoesSalvasLayout),"Sem produções salvas",Snackbar.LENGTH_LONG);
             snackbar.show();
-            //Toast.makeText(this,"Sem produções salvas",Toast.LENGTH_SHORT).show();
         }
         else {
 
@@ -42,8 +41,8 @@ public class ProducoesSalvas extends AppCompatActivity {
                 String id = cursor.getString(0);
                 String titulo = cursor.getString(1);
                 String ano = cursor.getString(2);
-                byte[] image = cursor.getBlob(3);
-                lista.add(new Imdb(titulo,id,ano, BitmapFactory.decodeByteArray(image,0,image.length)));
+                String image = cursor.getString(3);
+                lista.add(new Imdb(titulo,id,ano,image));
                 cursor.moveToNext();
             }
         }

@@ -3,9 +3,13 @@ package informacoes;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.example.hugo.projeto_imdb.R;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+import context.Contexto;
 
 /**
  * Created by Hugo on 02/12/2016.
@@ -26,17 +30,23 @@ public class Imdb {
     private String Awards;
     private String Poster;
     private Bitmap imagem;
+    private String imagemPath;
     private String Metascore;
     private String imdbRating;
     private String imdbVotes;
     private String imdbID;
     private String Type;
 
-    public Imdb(String title, String id,String year,Bitmap imagem){
+    public Imdb(String title, String id,String year,String imagem){
         this.Title = title;
         this.imdbID = id;
         this.Year = year;
-        this.imagem = imagem;
+        this.imagemPath = imagem;
+
+        //se o filme nao tem poster, o caminho gerado eh null, logo preenchemos com a imagem base
+        if (imagem==null){
+            this.setImagem(BitmapFactory.decodeResource(Contexto.context().getResources(), R.drawable.imdb));
+        }
     }
 
     public String getTitle() {
@@ -121,6 +131,14 @@ public class Imdb {
 
     public void setImagem(Bitmap imagem) {
         this.imagem = imagem;
+    }
+
+    public String getImagemPath() {
+        return imagemPath;
+    }
+
+    public void setImagemPath(String imagemPath) {
+        this.imagemPath = imagemPath;
     }
 
     @Override

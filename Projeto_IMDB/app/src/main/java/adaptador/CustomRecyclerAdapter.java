@@ -3,6 +3,8 @@ package adaptador;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +46,15 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter{
         final Imdb imdb = lista.get(position);
         holder.txtTitulo.setText(imdb.getTitle());
         holder.txtAno.setText(imdb.getYear());
-        holder.imgPoster.setImageBitmap(imdb.getImagem());
+        //se o caminho for null, a producao nao esta salva
+        //se esta salva, basta pega-la no bd
+        if(imdb.getImagemPath()==null){
+            holder.imgPoster.setImageBitmap(imdb.getImagem());
+        } else {
+            String path = imdb.getImagemPath();
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            holder.imgPoster.setImageBitmap(bitmap);
+        }
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,15 +2,28 @@ package com.example.hugo.projeto_imdb;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import context.Contexto;
 import database.BancoIMDb;
 import database.ControlaBanco;
 import database.CriaBanco;
@@ -46,16 +59,25 @@ public class ProducaoInfo extends AppCompatActivity {
                 Intent intent;
                 if(salvar.getText().toString().equals("Salvar"))
                 {
-                    ContentValues values = new ContentValues();
-                    BancoIMDb.putValues(values,imdb);
-                    Long resultado = banco.inserirProducao(CriaBanco.TABELA,values);
-                    //Snackbar snackbar = Snackbar.make(findViewById(R.id.producaoInfoLayout),resultado,Snackbar.LENGTH_LONG);
-                    //snackbar.show();
-                    if(resultado==-1)
-                        Toast.makeText(ProducaoInfo.this, "Erro ao adicionar", Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(ProducaoInfo.this, "Adicionado com sucesso", Toast.LENGTH_SHORT).show();
 
+                    //ContentValues values = new ContentValues();
+                    //BancoIMDb.putValues(values,imdb);
+                    Map<String,String> mapa = new HashMap<String, String>();
+                    preencherMapa(mapa,imdb);
+                    ContentValues values = new ContentValues();
+                    values = BancoIMDb.putValues(mapa,values);
+                    Long resultado = banco.inserirProducao(CriaBanco.TABELA,values);
+                    if(resultado==-1) {
+                        Toast.makeText(ProducaoInfo.this, "Erro ao adicionar", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(ProducaoInfo.this, "Adicionado com sucesso", Toast.LENGTH_SHORT).show();
+                        //se a producao nao tem poster, nao salva a imagem do imdb no bd
+                        if(!imdb.getPoster().equals("N/A")) {
+                            String caminho = salvarImagem(imdb.getImagem());
+                            imdb.setImagemPath(caminho);
+                        }
+                    }
                     finish();
                 } else {
                     String where = CriaBanco.tabela.IMDBID + "=" + "'"+imdb.getImdbID()+"'";
@@ -124,5 +146,62 @@ public class ProducaoInfo extends AppCompatActivity {
         textView15.setText(imdb.getImdbVotes());
         textView16.setText(imdb.getImdbID());
         textView17.setText(imdb.getType());
+    }
+
+    private static String salvarImagem(Bitmap imagem){
+        File pictureFile = getOutputMediaFile();
+        if(pictureFile == null){
+            Log.d("TAG","Erro ao criar o arquivo");
+            return null;
+        }
+
+        try{
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            imagem.compress(Bitmap.CompressFormat.JPEG,90,fos);
+            fos.close();
+            return pictureFile.getPath();
+        } catch (FileNotFoundException e){
+            Log.d("TAG","Arquivo nao encontrado: "+e.getMessage());
+            return null;
+        } catch (IOException e){
+            Log.d("TAG","Erro ao acessar arquivo: "+e.getMessage());
+            return null;
+        }
+    }
+
+    private static File getOutputMediaFile(){
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory() + "/imdb");
+
+        if(!mediaStorageDir.exists()){
+            if(!mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmssSSS").format(new Date());
+        String imageName = "poster" + timeStamp + ".jpg";
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator + imageName);
+        return mediaFile;
+    }
+
+    private void preencherMapa(Map<String,String> mapa,Imdb imdb){
+        mapa.put(BancoIMDb.TITLE,imdb.getTitle());
+        mapa.put(BancoIMDb.YEAR,imdb.getYear());
+        mapa.put(BancoIMDb.RATED,imdb.getRated());
+        mapa.put(BancoIMDb.RELEASED,imdb.getReleased());
+        mapa.put(BancoIMDb.RUNTIME,imdb.getRuntime());
+        mapa.put(BancoIMDb.GENRE,imdb.getGenre());
+        mapa.put(BancoIMDb.DIRECTOR,imdb.getDirector());
+        mapa.put(BancoIMDb.DIRECTOR,imdb.getWriter());
+        mapa.put(BancoIMDb.ACTORS,imdb.getActors());
+        mapa.put(BancoIMDb.PLOT,imdb.getPlot());
+        mapa.put(BancoIMDb.LANGUAGE,imdb.getLanguage());
+        mapa.put(BancoIMDb.COUNTRY,imdb.getCountry());
+        mapa.put(BancoIMDb.AWARDS,imdb.getAwards());
+        mapa.put(BancoIMDb.POSTER,imdb.getImagemPath());
+        mapa.put(BancoIMDb.METASCORE,imdb.getMetascore());
+        mapa.put(BancoIMDb.IMDBRATING,imdb.getImdbRating());
+        mapa.put(BancoIMDb.IMDBVOTES,imdb.getImdbVotes());
+        mapa.put(BancoIMDb.IMDBID,imdb.getImdbID());
+        mapa.put(BancoIMDb.TYPE,imdb.getType());
     }
 }

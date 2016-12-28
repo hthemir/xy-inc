@@ -4,6 +4,10 @@ import android.content.ContentValues;
 import android.graphics.Bitmap;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import informacoes.Imdb;
 
@@ -45,7 +49,7 @@ public class BancoIMDb {
                 + LANGUAGE + " text,"
                 + COUNTRY + " text,"
                 + AWARDS + " text,"
-                + POSTER + " BLOB,"
+                + POSTER + " text,"
                 + METASCORE + " text,"
                 + IMDBRATING + " text,"
                 + IMDBVOTES + " text,"
@@ -53,33 +57,14 @@ public class BancoIMDb {
                 + TYPE + " text";
     }
 
-    public static void putValues(ContentValues values, Imdb imdb){
-        values.put(TITLE,imdb.getTitle());
-        values.put(YEAR,imdb.getYear());
-        values.put(RATED,imdb.getRated());
-        values.put(RELEASED,imdb.getReleased());
-        values.put(RUNTIME,imdb.getRuntime());
-        values.put(GENRE,imdb.getGenre());
-        values.put(DIRECTOR,imdb.getDirector());
-        values.put(WRITER,imdb.getWriter());
-        values.put(ACTORS,imdb.getActors());
-        values.put(PLOT,imdb.getPlot());
-        values.put(LANGUAGE,imdb.getLanguage());
-        values.put(COUNTRY,imdb.getCountry());
-        values.put(AWARDS,imdb.getAwards());
-        //para salvar um bitmap, eh necessario tranforma-lo em um array de bytes
-        values.put(POSTER,bitmapParaBlob(imdb.getImagem()));
-        values.put(METASCORE,imdb.getMetascore());
-        values.put(IMDBRATING,imdb.getImdbRating());
-        values.put(IMDBVOTES,imdb.getImdbVotes());
-        values.put(IMDBID,imdb.getImdbID());
-        values.put(TYPE,imdb.getType());
+    public static ContentValues putValues(Map<String,String> mapa, ContentValues values){
+        Set<Map.Entry<String,String>> set = mapa.entrySet();
+        Iterator it = set.iterator();
 
-        
-    }
-    public static byte[] bitmapParaBlob(Bitmap bitmap){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
-        return stream.toByteArray();
+        while(it.hasNext()){
+            Map.Entry<String,String> entry = (Map.Entry)it.next();
+            values.put(entry.getKey(),entry.getValue());
+        }
+        return values;
     }
 }

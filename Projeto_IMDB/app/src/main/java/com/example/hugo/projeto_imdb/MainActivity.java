@@ -99,20 +99,20 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+            //O usuario clicou no disquete para salvar a busca feita no BD
             case R.id.action_save:
                 Intent intent = new Intent(MainActivity.this,ProducoesSalvas.class);
                 startActivity(intent);
-                //O usuario clicou no disquete para salvar a busca feita no BD
                 //Toast.makeText(this, "Resultados da busca salvos", Toast.LENGTH_SHORT).show();
                 return true;
 
+            //O usuario clicou na lupa para abrir a caixa de pesquisa
             case R.id.action_search:
-                //O usuario clicou na lupa para abrir a caixa de pesquisa
                 //Toast.makeText(this, "Pesquisando", Toast.LENGTH_SHORT).show();
                 return true;
 
+            //Se chegar no default, o usuario utilizou uma opcao nao implementada
             default:
-                //Se chegar no default, o usuario utilizou uma opcao nao implementada
                 Snackbar snackbar = Snackbar.make(findViewById(R.id.mainLayout),"Acao invalida",Snackbar.LENGTH_LONG);
                 snackbar.show();
                 //Toast.makeText(this, "Acao invalida",Toast.LENGTH_SHORT).show();

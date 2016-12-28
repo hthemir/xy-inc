@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.example.hugo.projeto_imdb.R;
 import com.google.gson.Gson;
@@ -17,6 +19,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,7 +29,9 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import context.Contexto;
 import informacoes.Imdb;
@@ -33,8 +40,6 @@ import informacoes.Imdb;
  * Created by Hugo on 02/12/2016.
  */
 public class Conexao {
-
-    //usar singleton para ter soh uma instancia
 
     public static ArrayList<Imdb> getInformacaoArrayImdb(String url){
 
@@ -141,7 +146,6 @@ public class Conexao {
                 InputStream inputStream = endereco.openStream();
                 //Baixa a imagem
                 Bitmap imagem = BitmapFactory.decodeStream(inputStream);
-                //imagem = redefinirImagem(imagem,4);
                 //Fecha a conexao
                 inputStream.close();
                 return imagem;
@@ -151,33 +155,21 @@ public class Conexao {
             return null;
         }
     }
-    //qtdTela seria o numero de producoes na tela
-    /*private static Bitmap redefinirImagem(Bitmap originalImage, int qtdTela){
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        int width = (int)(1.0/qtdTela * metrics.widthPixels);
-        int height = (int)(1.0/qtdTela * metrics.heightPixels);
 
-        Bitmap background = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        float originalWidth = originalImage.getWidth();
-        float originalHeight = originalImage.getHeight();
-
-        Canvas canvas = new Canvas(background);
-
-        float scale = width / originalWidth;
-
-        float xTranslation = 0.0f;
-        float yTranslation = (height - originalHeight * scale) / 2.0f;
-
-        Matrix transformation = new Matrix();
-        transformation.postTranslate(xTranslation, yTranslation);
-        transformation.preScale(scale, scale);
-
-        Paint paint = new Paint();
-        paint.setFilterBitmap(true);
-
-        canvas.drawBitmap(originalImage, transformation, paint);
-
-        return background;
-    }*/
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
