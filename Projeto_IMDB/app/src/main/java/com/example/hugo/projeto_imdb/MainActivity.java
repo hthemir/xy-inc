@@ -3,25 +3,22 @@ package com.example.hugo.projeto_imdb;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import adaptador.CustomRecyclerAdapter;
-import database.ControlaBanco;
 import informacoes.Imdb;
-import thread.TarefaAssincrona;
+import assynctask.TarefaAssincrona;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //Esconde o teclado
+                searchView.clearFocus();
                 //Pega o titulo pesquisado. Se for mais de um nome ele troca espaços por + (ex.: the flash -> the+flash)
                 String titulo = searchView.getQuery().toString().replace(' ','+');
                 //Esse endereco retorna uma lista com os filmes que contenham a pesquisa em seu titulo
@@ -68,15 +67,19 @@ public class MainActivity extends AppCompatActivity {
                 //Cria uma thread para fazer a pesquisa
                 ArrayList<Imdb> lista = callTask(endereco);
                 if(lista == null){
-                    Toast.makeText(MainActivity.this,"Filme nao encontrado",Toast.LENGTH_LONG).show();
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.mainLayout),"Filme nao encontrado",Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    // Toast.makeText(MainActivity.this,"Filme nao encontrado",Toast.LENGTH_LONG).show();
                     return false;
                 }else{
                     //Associa a variavel recyclerView à listaReciclavel no layout
                     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listaReciclavel);
                     //Cria um adapter custom com a lista resultado da pesquisae entao preenche a lista reciclavel
-                    recyclerView.setAdapter(new CustomRecyclerAdapter(lista,MainActivity.this));
+                    recyclerView.setAdapter(new CustomRecyclerAdapter(lista,MainActivity.this,MainActivity.this));
+                    //Cria um layout grid e define como o layout da lista reciclavel
+                    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this,2);
                     //Cria um layout vertical e define como o layout da lista reciclavel
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false);
+                    //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false);
                     recyclerView.setLayoutManager(layoutManager);
                     return true;
                 }
@@ -96,28 +99,30 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+            //O usuario clicou no disquete para salvar a busca feita no BD
             case R.id.action_save:
                 Intent intent = new Intent(MainActivity.this,ProducoesSalvas.class);
                 startActivity(intent);
-                //O usuario clicou no disquete para salvar a busca feita no BD
                 //Toast.makeText(this, "Resultados da busca salvos", Toast.LENGTH_SHORT).show();
                 return true;
 
+            //O usuario clicou na lupa para abrir a caixa de pesquisa
             case R.id.action_search:
-                //O usuario clicou na lupa para abrir a caixa de pesquisa
                 //Toast.makeText(this, "Pesquisando", Toast.LENGTH_SHORT).show();
                 return true;
 
+            //Se chegar no default, o usuario utilizou uma opcao nao implementada
             default:
-                //Se chegar no default, o usuario utilizou uma opcao nao implementada
-                Toast.makeText(this, "Acao invalida",Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.mainLayout),"Acao invalida",Snackbar.LENGTH_LONG);
+                snackbar.show();
+                //Toast.makeText(this, "Acao invalida",Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
         }
     }
 
     private ArrayList<Imdb> callTask(String endereco){
         //Cria uma assync task, que executa no plano de fundo do aplicativo
-        TarefaAssincrona task = new TarefaAssincrona();
+        TarefaAssincrona task = new TarefaAssincrona(MainActivity.this);
         //execute faz com que a task execute seus metodos( doInBackground necessario + 2 opcionais)
         task.execute(endereco);
 
@@ -132,5 +137,4 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
-
 }
