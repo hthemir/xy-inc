@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">IMDB</string>
 
+    //Toolbars
+    <string name="act_main">Pesquisa IMDb</string>
+    <string name="act_info">Informacoes</string>
+    <string name="act_saved">Favoritos</string>
+    <string name="ic_return">Voltar</string>
+    <string name="ic_save">Salvar</string>
+    <string name="ic_search">Pesquisar</string>
+
     //Informacoes
     <string name="producaoTitulo">Title</string>
     <string name="producaoAno">Year</string>
