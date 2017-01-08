@@ -1,8 +1,11 @@
 package com.example.hugo.projeto_imdb.activity;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,16 +16,28 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import com.android.volley.VolleyError;
 import com.example.hugo.projeto_imdb.R;
 import com.example.hugo.projeto_imdb.adapter.CustomRecyclerAdapter;
 
 import com.example.hugo.projeto_imdb.production.Imdb;
 import com.example.hugo.projeto_imdb.assynctask.AssyncTaskArray;
+import com.example.hugo.projeto_imdb.webservice.VolleyRequests;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
+
+    ArrayList<Imdb> list;
+    ProgressDialog load;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +76,11 @@ public class MainActivity extends AppCompatActivity {
                 //Esse endereco retorna uma lista com os filmes que contenham a pesquisa em seu titulo
                 String endereco = "http://www.omdbapi.com/?s=" + titulo;
                 //Cria uma thread para fazer a pesquisa
-                ArrayList<Imdb> lista = callTask(endereco);
-                if (lista == null) {
+                //ArrayList<Imdb> lista = callTask(endereco);
+                showProgressDialog();
+                callVolley(endereco);
+
+                /*if (list == null) {
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.mainLayout), "Filme nao encontrado", Snackbar.LENGTH_LONG);
                     snackbar.show();
                     return false;
@@ -70,12 +88,12 @@ public class MainActivity extends AppCompatActivity {
                     //Associa a variavel recyclerView à listaReciclavel no layout
                     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listaReciclavel);
                     //Cria um adapter custom com a lista resultado da pesquisae entao preenche a lista reciclavel
-                    recyclerView.setAdapter(new CustomRecyclerAdapter(lista, MainActivity.this, MainActivity.this));
+                    recyclerView.setAdapter(new CustomRecyclerAdapter(list, MainActivity.this, MainActivity.this));
                     //Cria um layout grid e define como o layout da lista reciclavel
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2);
-                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.setLayoutManager(layoutManager);*/
                     return true;
-                }
+                //}
             }
 
             @Override
@@ -127,4 +145,72 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
+
+    private void callVolley(String endereco){
+        VolleyRequests volleyRequests = new VolleyRequests(MainActivity.this);
+        volleyRequests.volleyJsonRequest(endereco, new VolleyRequests.VolleyResult() {
+            @Override
+            public void onSucess(Object result) {
+                dismissProgressDialog();
+                setList((JSONObject)result);
+                if(list!=null) {
+                    fillRecyclerView(list);
+                } else {
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.mainLayout), "Filme nao encontrado", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+
+            }
+            @Override
+            public void onError(VolleyError error) {
+                dismissProgressDialog();
+            }
+        });
+    }
+
+    public void callVolleyImage(){
+        VolleyRequests volleyRequests = new VolleyRequests(MainActivity.this);
+        for(final Imdb imdb: list){
+            volleyRequests.volleyImageRequest(imdb.getPoster(), new VolleyRequests.VolleyResult() {
+                @Override
+                public void onSucess(Object result) {
+                    imdb.setImagem((Bitmap)result);
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    imdb.setImagem(BitmapFactory.decodeResource(getResources(),R.drawable.imdb));
+                }
+            });
+        }
+    }
+
+    public void setList( JSONObject value){
+        try {
+            JSONArray jsonArray = value.getJSONArray("Search");
+            Gson gson = new Gson();
+            Type collectionType = new TypeToken<ArrayList<Imdb>>(){}.getType();
+            list = gson.fromJson(jsonArray.toString(), collectionType);
+
+            callVolleyImage();
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void showProgressDialog(){
+        load = ProgressDialog.show(MainActivity.this,"","Carregando",true);
+    }
+
+    public void dismissProgressDialog(){
+        load.dismiss();
+    }
+
+    public void fillRecyclerView(ArrayList<Imdb> list){
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listaReciclavel);
+        recyclerView.setAdapter(new CustomRecyclerAdapter(list, MainActivity.this, MainActivity.this));
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+    }
+
 }

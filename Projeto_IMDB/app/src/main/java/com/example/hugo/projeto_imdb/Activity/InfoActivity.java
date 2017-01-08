@@ -1,12 +1,17 @@
 package com.example.hugo.projeto_imdb.activity;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,25 +20,39 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.hugo.projeto_imdb.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import com.example.hugo.projeto_imdb.adapter.CustomRecyclerAdapter;
 import com.example.hugo.projeto_imdb.database.IMDbDatabase;
 import com.example.hugo.projeto_imdb.database.ControlDatabase;
 import com.example.hugo.projeto_imdb.database.CreateDatabase;
 import com.example.hugo.projeto_imdb.production.Imdb;
 import com.example.hugo.projeto_imdb.assynctask.AssyncTaskObj;
+import com.example.hugo.projeto_imdb.webservice.VolleyRequests;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class InfoActivity extends AppCompatActivity {
+
+    Imdb imdb;
+    ProgressDialog load;
 
     private ControlDatabase banco;
     @Override
@@ -93,9 +112,10 @@ public class InfoActivity extends AppCompatActivity {
                 }
             });
         } else {
+            showProgressDialog();
             salvar.setText("Salvar");
-            final Imdb imdb = callTask("http://www.omdbapi.com/?i=" + id);
-            setView(imdb);
+            //imdb = callTask("http://www.omdbapi.com/?i=" + id);
+            callVolley("http://www.omdbapi.com/?i=" + id);
             salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -121,7 +141,6 @@ public class InfoActivity extends AppCompatActivity {
                             }
                         } catch (Exception e) {
                             e.getMessage();
-                            //// TODO: 02/01/2017 ajustar catch
                         }
 
                     } else {
@@ -131,6 +150,53 @@ public class InfoActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void callVolley(String endereco){
+        VolleyRequests volleyRequests = new VolleyRequests(InfoActivity.this);
+        volleyRequests.volleyJsonRequest(endereco, new VolleyRequests.VolleyResult() {
+            @Override
+            public void onSucess(Object result) {
+                dismissProgressDialog();
+                setImdb((JSONObject)result);
+                setView(imdb);
+            }
+            @Override
+            public void onError(VolleyError error) {
+                dismissProgressDialog();
+            }
+        });
+    }
+
+    public void callVolleyImage(){
+        VolleyRequests volleyRequests = new VolleyRequests(InfoActivity.this);
+        volleyRequests.volleyImageRequest(imdb.getPoster(), new VolleyRequests.VolleyResult() {
+            @Override
+            public void onSucess(Object result) {
+                imdb.setImagem((Bitmap)result);
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                imdb.setImagem(BitmapFactory.decodeResource(getResources(),R.drawable.imdb));
+            }
+        });
+
+    }
+
+    public void setImdb( JSONObject value){
+            String json = value.toString();
+            Gson gson = new Gson();
+            imdb = gson.fromJson(json, Imdb.class);
+            callVolleyImage();
+    }
+
+    public void showProgressDialog(){
+        load = ProgressDialog.show(InfoActivity.this,"","Carregando",true);
+    }
+
+    public void dismissProgressDialog(){
+        load.dismiss();
     }
 
 
