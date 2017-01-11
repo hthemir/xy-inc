@@ -25,7 +25,8 @@
         <activity android:name=".activity.InfoActivity" />
         <activity
             android:name=".activity.SavedActivity"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor" />
+        <activity android:name=".activity.IMDbWebViewActivity"></activity>
     </application>
 
 </manifest>

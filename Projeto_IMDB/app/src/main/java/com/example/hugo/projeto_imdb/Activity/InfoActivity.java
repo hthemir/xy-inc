@@ -55,12 +55,13 @@ public class InfoActivity extends AppCompatActivity {
     ProgressDialog load;
 
     private ControlDatabase banco;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.my_toolbar_info);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar_info);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -99,7 +100,7 @@ public class InfoActivity extends AppCompatActivity {
             };
             final String where = CreateDatabase.tabela.IMDBID + "=" + "'" + id + "'";
             Cursor cursor = banco.buscaProducao(CreateDatabase.TABELA, campos, where);
-            final Imdb imdb = setImdbCursor(cursor);
+            imdb = setImdbCursor(cursor);
             setView(imdb);
             salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,17 +151,31 @@ public class InfoActivity extends AppCompatActivity {
                 }
             });
         }
+
+        Button openIMDb = (Button) findViewById(R.id.buttonOpenIMDb);
+        openIMDb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InfoActivity.this, IMDbWebViewActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("imdb", imdb.getImdbID());
+                startActivity(intent);
+            }
+        });
+
+
     }
 
-    private void callVolley(String endereco){
+    private void callVolley(String endereco) {
         VolleyRequests volleyRequests = new VolleyRequests(InfoActivity.this);
         volleyRequests.volleyJsonRequest(endereco, new VolleyRequests.VolleyResult() {
             @Override
             public void onSucess(Object result) {
                 dismissProgressDialog();
-                setImdb((JSONObject)result);
+                setImdb((JSONObject) result);
                 setView(imdb);
             }
+
             @Override
             public void onError(VolleyError error) {
                 dismissProgressDialog();
@@ -168,34 +183,34 @@ public class InfoActivity extends AppCompatActivity {
         });
     }
 
-    public void callVolleyImage(){
+    public void callVolleyImage() {
         VolleyRequests volleyRequests = new VolleyRequests(InfoActivity.this);
         volleyRequests.volleyImageRequest(imdb.getPoster(), new VolleyRequests.VolleyResult() {
             @Override
             public void onSucess(Object result) {
-                imdb.setImagem((Bitmap)result);
+                imdb.setImagem((Bitmap) result);
             }
 
             @Override
             public void onError(VolleyError error) {
-                imdb.setImagem(BitmapFactory.decodeResource(getResources(),R.drawable.imdb));
+                imdb.setImagem(BitmapFactory.decodeResource(getResources(), R.drawable.imdb));
             }
         });
 
     }
 
-    public void setImdb( JSONObject value){
-            String json = value.toString();
-            Gson gson = new Gson();
-            imdb = gson.fromJson(json, Imdb.class);
-            callVolleyImage();
+    public void setImdb(JSONObject value) {
+        String json = value.toString();
+        Gson gson = new Gson();
+        imdb = gson.fromJson(json, Imdb.class);
+        callVolleyImage();
     }
 
-    public void showProgressDialog(){
-        load = ProgressDialog.show(InfoActivity.this,"","Carregando",true);
+    public void showProgressDialog() {
+        load = ProgressDialog.show(InfoActivity.this, "", "Carregando", true);
     }
 
-    public void dismissProgressDialog(){
+    public void dismissProgressDialog() {
         load.dismiss();
     }
 
@@ -214,7 +229,7 @@ public class InfoActivity extends AppCompatActivity {
         }
     }
 
-    private Imdb callTask(String endereco){
+    private Imdb callTask(String endereco) {
         //Cria uma assync task, que executa no plano de fundo do aplicativo
         AssyncTaskObj task = new AssyncTaskObj(InfoActivity.this);
         //execute faz com que a task execute seus metodos( doInBackground necessario + 2 opcionais)
@@ -232,7 +247,7 @@ public class InfoActivity extends AppCompatActivity {
         }
     }
 
-    private Imdb setImdbCursor(Cursor cursor){
+    private Imdb setImdbCursor(Cursor cursor) {
         Imdb imdb = new Imdb();
         imdb.setTitle(cursor.getString(0));
         imdb.setYear(cursor.getString(1));
@@ -256,7 +271,7 @@ public class InfoActivity extends AppCompatActivity {
         return imdb;
     }
 
-    private void setView(Imdb imdb){
+    private void setView(Imdb imdb) {
         TextView textView = (TextView) findViewById(R.id.meuTitulo);
         TextView textView1 = (TextView) findViewById(R.id.meuAno);
         TextView textView2 = (TextView) findViewById(R.id.minhaClassificacao);
@@ -296,32 +311,32 @@ public class InfoActivity extends AppCompatActivity {
         textView17.setText(imdb.getType());
     }
 
-    private static String salvarImagem(Bitmap imagem){
+    private static String salvarImagem(Bitmap imagem) {
         File pictureFile = getOutputMediaFile();
-        if(pictureFile == null){
-            Log.d("TAG","Erro ao criar o arquivo");
+        if (pictureFile == null) {
+            Log.d("TAG", "Erro ao criar o arquivo");
             return null;
         }
 
-        try{
+        try {
             FileOutputStream fos = new FileOutputStream(pictureFile);
-            imagem.compress(Bitmap.CompressFormat.JPEG,90,fos);
+            imagem.compress(Bitmap.CompressFormat.JPEG, 90, fos);
             fos.close();
             return pictureFile.getPath();
-        } catch (FileNotFoundException e){
-            Log.d("TAG","Arquivo nao encontrado: "+e.getMessage());
+        } catch (FileNotFoundException e) {
+            Log.d("TAG", "Arquivo nao encontrado: " + e.getMessage());
             return null;
-        } catch (IOException e){
-            Log.d("TAG","Erro ao acessar arquivo: "+e.getMessage());
+        } catch (IOException e) {
+            Log.d("TAG", "Erro ao acessar arquivo: " + e.getMessage());
             return null;
         }
     }
 
-    private static File getOutputMediaFile(){
+    private static File getOutputMediaFile() {
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory() + "/imdb");
 
-        if(!mediaStorageDir.exists()){
-            if(!mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
                 return null;
             }
         }
@@ -331,25 +346,25 @@ public class InfoActivity extends AppCompatActivity {
         return mediaFile;
     }
 
-    private void preencherMapa(Map<String,String> mapa,Imdb imdb){
-        mapa.put(IMDbDatabase.TITLE,imdb.getTitle());
-        mapa.put(IMDbDatabase.YEAR,imdb.getYear());
-        mapa.put(IMDbDatabase.RATED,imdb.getRated());
-        mapa.put(IMDbDatabase.RELEASED,imdb.getReleased());
-        mapa.put(IMDbDatabase.RUNTIME,imdb.getRuntime());
-        mapa.put(IMDbDatabase.GENRE,imdb.getGenre());
-        mapa.put(IMDbDatabase.DIRECTOR,imdb.getDirector());
-        mapa.put(IMDbDatabase.WRITER,imdb.getWriter());
-        mapa.put(IMDbDatabase.ACTORS,imdb.getActors());
-        mapa.put(IMDbDatabase.PLOT,imdb.getPlot());
-        mapa.put(IMDbDatabase.LANGUAGE,imdb.getLanguage());
-        mapa.put(IMDbDatabase.COUNTRY,imdb.getCountry());
-        mapa.put(IMDbDatabase.AWARDS,imdb.getAwards());
-        mapa.put(IMDbDatabase.POSTER,imdb.getImagemPath());
-        mapa.put(IMDbDatabase.METASCORE,imdb.getMetascore());
-        mapa.put(IMDbDatabase.IMDBRATING,imdb.getImdbRating());
-        mapa.put(IMDbDatabase.IMDBVOTES,imdb.getImdbVotes());
-        mapa.put(IMDbDatabase.IMDBID,imdb.getImdbID());
-        mapa.put(IMDbDatabase.TYPE,imdb.getType());
+    private void preencherMapa(Map<String, String> mapa, Imdb imdb) {
+        mapa.put(IMDbDatabase.TITLE, imdb.getTitle());
+        mapa.put(IMDbDatabase.YEAR, imdb.getYear());
+        mapa.put(IMDbDatabase.RATED, imdb.getRated());
+        mapa.put(IMDbDatabase.RELEASED, imdb.getReleased());
+        mapa.put(IMDbDatabase.RUNTIME, imdb.getRuntime());
+        mapa.put(IMDbDatabase.GENRE, imdb.getGenre());
+        mapa.put(IMDbDatabase.DIRECTOR, imdb.getDirector());
+        mapa.put(IMDbDatabase.WRITER, imdb.getWriter());
+        mapa.put(IMDbDatabase.ACTORS, imdb.getActors());
+        mapa.put(IMDbDatabase.PLOT, imdb.getPlot());
+        mapa.put(IMDbDatabase.LANGUAGE, imdb.getLanguage());
+        mapa.put(IMDbDatabase.COUNTRY, imdb.getCountry());
+        mapa.put(IMDbDatabase.AWARDS, imdb.getAwards());
+        mapa.put(IMDbDatabase.POSTER, imdb.getImagemPath());
+        mapa.put(IMDbDatabase.METASCORE, imdb.getMetascore());
+        mapa.put(IMDbDatabase.IMDBRATING, imdb.getImdbRating());
+        mapa.put(IMDbDatabase.IMDBVOTES, imdb.getImdbVotes());
+        mapa.put(IMDbDatabase.IMDBID, imdb.getImdbID());
+        mapa.put(IMDbDatabase.TYPE, imdb.getType());
     }
 }

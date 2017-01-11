@@ -28,4 +28,7 @@
     <string name="producaoVotosIMDb">IMDb Votes</string>
     <string name="producaoIDIMDb">IMDb ID</string>
     <string name="producaoTipo">Type</string>
+
+    //Botoes
+    <string name="botaoAbrirIMDb">See on IMDb</string>
 </resources>

@@ -29,6 +29,14 @@
             android:layout_height="wrap_content"
             android:background="@color/corAmarela" />
 
+        <Button
+            android:id="@+id/buttonOpenIMDb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@color/corAmarela"
+            android:text="@string/botaoAbrirIMDb" />
+
     </LinearLayout>
 
     <ScrollView
